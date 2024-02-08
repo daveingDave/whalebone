@@ -1,0 +1,21 @@
+{
+  "name": "whalebone",
+  "version": "1.0.0",
+  "description": "Homework",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test-headed": "npx playwright test --headed",
+    "playwright:ui": "playwright test --ui",
+    "docker-build": "docker build -t whalebone .",
+    "docker-run": "docker run whalebone",
+    "docker": "npm run docker-build; npm run docker-run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.41.2",
+    "@types/node": "^20.11.16"
+  }
+}
