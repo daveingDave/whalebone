@@ -52,3 +52,14 @@ test('More teams', async () => {
   console.log("Cities with 2 or more teams: ", citiesWithMoreThanOneTeam);
   expect(citiesWithMoreThanOneTeam.length).toBeGreaterThan(0);
 });
+
+test('Count and names of the Metropolitan teams', async () => {
+  const data = await fetchData();
+  if (!data) return;
+
+  const metropolitanTeams = data.teams.filter(team => team.division.name === 'Metropolitan')
+  const metropolitanTeamNames = metropolitanTeams.map(team => team.name)
+
+  expect(metropolitanTeams.length).toBe(8)
+  console.log(`There are ${metropolitanTeams.length} teams in the Metropolitan division, and their names are`, metropolitanTeamNames)
+});
