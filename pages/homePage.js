@@ -1,8 +1,4 @@
-import {Page} from "@playwright/test";
-
-
 export class HomePage {
-  readonly page: Page
   constructor(page) {
     this.page = page
   }
