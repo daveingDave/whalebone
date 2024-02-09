@@ -28,6 +28,7 @@ test('Count all teams', async () => {
 });
 
 test('Oldest Team & Player Count Test', async ({page}) => {
+  test.setTimeout(10000)
   const data = await fetchData();
   if (!data) return;
 
