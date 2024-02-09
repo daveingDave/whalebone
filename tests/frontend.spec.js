@@ -1,7 +1,7 @@
 import { HomePage } from '../pages/homePage'
-import { SampleAppPage } from "../pages/sampleAppPage";
-import { LoadDelayPage } from "../pages/loadDelayPage";
-import { ProgressBarPage } from "../pages/progressBarPage";
+import { SampleAppPage } from '../pages/sampleAppPage';
+import { LoadDelayPage } from '../pages/loadDelayPage';
+import { ProgressBarPage } from '../pages/progressBarPage';
 
 const { test } = require('@playwright/test');
 

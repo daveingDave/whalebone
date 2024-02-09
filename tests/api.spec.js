@@ -11,31 +11,51 @@ async function fetchData() {
     return null;
   }
 }
+//function to get number of players from page
+async function getNumberOfPlayers(page, text) {
+  return await page.$$eval('span', (spans, searchText) => {
+    const caseSensitiveSpans = spans.filter(span => span.textContent === searchText);
+    return caseSensitiveSpans.length;
+  }, text.toUpperCase());
+}
 
-test('Count teams', async () => {
+test('Count all teams', async () => {
   const data = await fetchData();
   if (!data) return;
 
   const teamsCount = data.teams.length;
-  console.log("Count of teams:", teamsCount);
+  console.log('Count of teams:', teamsCount);
 });
 
-test('Oldest team', async () => {
+test('Oldest Team & Player Count Test', async ({page}) => {
   const data = await fetchData();
   if (!data) return;
 
   const oldestTeam = data.teams.reduce((oldest, current) => {
     return oldest.founded < current.founded ? oldest : current;
   });
-  console.log("Oldest team:", oldestTeam.name);
+  console.log('Oldest team:', oldestTeam.name);
+
+  //use the oldest team url and count the number of CAN and USA players
+  await page.goto(oldestTeam.officialSiteUrl + 'roster')
+  await page.waitForLoadState('networkidle')
+  const numberOfCanadians = await getNumberOfPlayers(page,'can')
+  const numberOfAmericans = await getNumberOfPlayers(page, 'usa')
+  if (numberOfCanadians > numberOfAmericans) {
+    console.log('Team with more players: Canadiens', numberOfCanadians);
+  } else if (numberOfCanadians < numberOfAmericans) {
+    console.log('Team with more players: Americans', numberOfAmericans);
+  } else {
+    console.log('Both teams have the same number of players.', numberOfCanadians);
+  }
 });
 
 test('Number of metropolitan teams', async () => {
   const data = await fetchData();
   if (!data) return;
 
-  const metropolitanTeams = data.teams.filter(team => team.division.name === "Metropolitan").length;
-  console.log("Number of metropolitan teams are", metropolitanTeams);
+  const metropolitanTeams = data.teams.filter(team => team.division.name === 'Metropolitan').length;
+  console.log('Number of metropolitan teams are', metropolitanTeams);
 });
 
 test('More teams', async () => {
@@ -49,11 +69,11 @@ test('More teams', async () => {
   const citiesWithMoreThanOneTeam = Object.entries(cities).filter(([city, count]) => {
     return count >= 2;
   });
-  console.log("Cities with 2 or more teams: ", citiesWithMoreThanOneTeam);
+  console.log('Cities with 2 or more teams: ', citiesWithMoreThanOneTeam);
   expect(citiesWithMoreThanOneTeam.length).toBeGreaterThan(0);
 });
 
-test('Count and names of the Metropolitan teams', async () => {
+test('The Count and Names of the Metropolitan Teams', async () => {
   const data = await fetchData();
   if (!data) return;
 
